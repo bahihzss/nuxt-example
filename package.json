@@ -4,12 +4,17 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nuxt"
+    "dev": "nuxt",
+    "test": "jest"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/composition-api": "^0.27.0",
-    "nuxt": "^2.15.8"
+    "@types/jest": "^27.0.1",
+    "jest": "^27.1.0",
+    "nuxt": "^2.15.8",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.2"
   }
 }
