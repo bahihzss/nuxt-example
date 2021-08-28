@@ -1,14 +1,18 @@
 <template>
   <div class="PageIndex">
-    Hello, Vue.
+    Hello, Nuxt.
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { defineComponent } from '@nuxtjs/composition-api'
 
-export default Vue.extend({
+export default defineComponent({
   name: 'PageIndex',
+
+  components: {},
+
+  setup () {},
 })
 </script>
 
