@@ -8,7 +8,7 @@ export class TaskRepositoryWithMemory implements TaskRepository {
     return this.#tasks
   }
 
-  add (task: Task): boolean {
+  async add (task: Task): Promise<boolean> {
     this.#tasks.push(task)
     return true
   }
