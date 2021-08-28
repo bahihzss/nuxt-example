@@ -1,8 +1,17 @@
 import { Task } from '~/models/Task'
 
 describe('Taskモデル', () => {
+  let task: Task
+  beforeEach(() => {
+    task = new Task('サンプルタスク')
+  })
+
   test('コンストラクタ', () => {
-    const task = new Task('サンプルタスク')
-    expect(task.name).toEqual('サンプルタスク')
+    expect(task.name).toBe('サンプルタスク')
+  })
+
+  test('Task.create', () => {
+    const createdTask = Task.create({ name: 'サンプルタスク' })
+    expect(createdTask).toEqual(task)
   })
 })
