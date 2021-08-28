@@ -9,15 +9,15 @@ export class Task {
     readonly name: string,
   ) {}
 
-  static create({ name }: ConstructorArgs) {
+  static create ({ name }: ConstructorArgs) {
     return new Task(name)
   }
 
-  public done() {
+  public done () {
     this.#isDone = true
   }
 
-  get isDone() {
+  get isDone () {
     return this.#isDone
   }
 }
