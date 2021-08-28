@@ -2,3 +2,4 @@ node_modules
 .idea
 .nuxt
 yarn.lock
+yarn-error.log
