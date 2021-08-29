@@ -8,18 +8,18 @@ describe('useTasks', () => {
   })
 
   test('タスクを新規追加', async () => {
-    const { tasks, create } = useTasks()
+    const { tasks, create, clean } = useTasks()
 
     let resolve = (_: any) => {}
     const promise = new Promise(_resolve => { resolve = _resolve })
 
     const unwatch = watch(tasks, (tasks) => {
-      expect(tasks[0].name).toBe('サンプルタスク')
-      resolve(null)
+      resolve(tasks[0].name)
     })
 
     await create('サンプルタスク')
-    await promise
+    await expect(promise).resolves.toBe('サンプルタスク')
     unwatch()
+    clean()
   })
 })

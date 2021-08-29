@@ -1,5 +1,5 @@
 import { TaskRepositoryWithMemory } from '~/repositories/TaskRepositoryWithMemory'
-import { ref } from '@nuxtjs/composition-api'
+import { getCurrentInstance, onUnmounted, ref } from '@nuxtjs/composition-api'
 import { Task } from '~/domain/Task'
 
 export const useTasks = () => {
@@ -15,9 +15,13 @@ export const useTasks = () => {
     await tasksRepository.add(task)
   }
 
+  if (getCurrentInstance() !== null) {
+    onUnmounted(clean)
+  }
+
   return {
     tasks,
-    clean,
     create,
+    clean,
   }
 }
