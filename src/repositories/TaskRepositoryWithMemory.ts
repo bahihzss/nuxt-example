@@ -16,15 +16,15 @@ export class TaskRepositoryWithMemory implements TaskRepository {
     return this.#tasks.map(({ id, name, isDone }) => new Task(id, name, isDone))
   }
 
+  async find (id: string): Promise<Task | null> {
+    return this._tasks.find((task) => task.id === id) ?? null
+  }
+
   async add (task: Task): Promise<boolean> {
     const { id, name, isDone } = task
     this.#tasks.push({ id, name, isDone })
     this.#runObservers()
     return true
-  }
-
-  #runObservers () {
-    this.#observers.forEach(observer => { observer(this._tasks) })
   }
 
   observe (observer: TasksObserver): () => void {
@@ -41,5 +41,9 @@ export class TaskRepositoryWithMemory implements TaskRepository {
         this.#observers.splice(i, 1)
       }
     }
+  }
+
+  #runObservers () {
+    this.#observers.forEach(observer => { observer(this._tasks) })
   }
 }
