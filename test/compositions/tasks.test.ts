@@ -22,4 +22,22 @@ describe('useTasks', () => {
     unwatch()
     clean()
   })
+
+  test('タスクを完了', async () => {
+    const { tasks, create, done, clean } = useTasks()
+
+    await create('サンプルタスク')
+
+    let resolve = (_: any) => {}
+    const promise = new Promise(_resolve => { resolve = _resolve })
+
+    const unwatch = watch(tasks, (tasks) => {
+      resolve(tasks[0].isDone)
+    })
+
+    await done(tasks.value[0].id)
+    await expect(promise).resolves.toBeTruthy()
+    unwatch()
+    clean()
+  })
 })

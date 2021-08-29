@@ -15,6 +15,16 @@ export const useTasks = () => {
     await tasksRepository.add(task)
   }
 
+  const done = async (id: string) => {
+    const task = await tasksRepository.find(id)
+    if (task) {
+      task.done()
+      tasksRepository.update(task)
+      return
+    }
+    throw new Error(`Failed to done: '${id}' does not exist.`)
+  }
+
   if (getCurrentInstance() !== null) {
     onUnmounted(clean)
   }
@@ -22,6 +32,7 @@ export const useTasks = () => {
   return {
     tasks,
     create,
+    done,
     clean,
   }
 }
