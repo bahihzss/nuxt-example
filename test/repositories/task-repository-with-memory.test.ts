@@ -15,6 +15,12 @@ describe('TaskRepositoryWithMemory', () => {
     expect(taskRepository._tasks).toEqual([task])
   })
 
+  test('add:already-exists', async () => {
+    await taskRepository.add(task)
+    const promise = taskRepository.add(task)
+    await expect(promise).rejects.toThrowError(`Failed to add: 'test-id' already exists.`)
+  })
+
   test('find', async () => {
     await taskRepository.add(task)
     const foundTask = await taskRepository.find('test-id')

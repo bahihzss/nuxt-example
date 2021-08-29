@@ -21,10 +21,13 @@ export class TaskRepositoryWithMemory implements TaskRepository {
   }
 
   async add (task: Task): Promise<boolean> {
-    const { id, name, isDone } = task
-    this.#tasks.push({ id, name, isDone })
-    this.#runObservers()
-    return true
+    if (!await this.exists(task.id)) {
+      const { id, name, isDone } = task
+      this.#tasks.push({ id, name, isDone })
+      this.#runObservers()
+      return true
+    }
+    throw new Error(`Failed to add: '${task.id}' already exists.`)
   }
 
   async update (task: Task): Promise<boolean> {
