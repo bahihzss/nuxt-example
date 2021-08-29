@@ -5,11 +5,10 @@ type ConstructorArgs = {
 }
 
 export class Task {
-  #isDone = false
-
   constructor (
     readonly id: string,
     readonly name: string,
+    private _isDone = false,
   ) {}
 
   static create ({ name }: ConstructorArgs) {
@@ -17,10 +16,10 @@ export class Task {
   }
 
   public done () {
-    this.#isDone = true
+    this._isDone = true
   }
 
   get isDone () {
-    return this.#isDone
+    return this._isDone
   }
 }

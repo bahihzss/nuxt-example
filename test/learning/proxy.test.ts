@@ -50,6 +50,10 @@ describe('Proxyオブジェクトのテスト', () => {
       set name (name: string) {
         this._name = name
       }
+
+      get name () {
+        return this._name
+      }
     }
 
     const targetObj = new Target('Taro')
