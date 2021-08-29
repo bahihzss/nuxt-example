@@ -26,7 +26,7 @@ describe('TaskRepositoryWithMemory', () => {
 
       if (count === 3) {
         expect(tasks[0].isDone).toBeTruthy()
-        resolve(unsubscribe)
+        resolve(null)
       }
     })
 

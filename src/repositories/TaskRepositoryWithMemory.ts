@@ -2,6 +2,8 @@ import { TaskRepository, TasksObserver } from '~/domain/TaskRepository'
 import { Task } from '~/domain/Task'
 
 export class TaskRepositoryWithMemory implements TaskRepository {
+  #observers: TasksObserver[] = []
+
   #tasks: Task[] = new Proxy([], {
     set: (tasks: Task[], key: string | symbol, value: any, tasksReceiver: any): boolean => {
       if (value instanceof Task) {
@@ -22,8 +24,6 @@ export class TaskRepositoryWithMemory implements TaskRepository {
       return Reflect.set(tasks, key, value, tasksReceiver)
     },
   })
-
-  #observers: TasksObserver[] = []
 
   get _tasks () {
     return this.#tasks
