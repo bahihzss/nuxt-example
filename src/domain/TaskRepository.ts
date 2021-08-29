@@ -8,4 +8,8 @@ export interface TaskRepository {
   add (task: Task): Promise<boolean>
 
   observe (observer: TasksObserver): () => void
+
+  update (task: Task): Promise<boolean>
+
+  exists (id: string): Promise<boolean>
 }

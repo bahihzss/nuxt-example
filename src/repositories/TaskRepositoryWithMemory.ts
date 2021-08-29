@@ -27,6 +27,21 @@ export class TaskRepositoryWithMemory implements TaskRepository {
     return true
   }
 
+  async update (task: Task): Promise<boolean> {
+    if (await this.exists(task.id)) {
+      const { id, name, isDone } = task
+      const index = this._tasks.map(({ id }) => id).indexOf(task.id)
+      this.#tasks.splice(index, 1, { id, name, isDone })
+      this.#runObservers()
+      return true
+    }
+    throw new Error(`Failed to update: '${task.id}' does not exist.`)
+  }
+
+  async exists (id: string): Promise<boolean> {
+    return (await this.find(id)) !== null
+  }
+
   observe (observer: TasksObserver): () => void {
     observer(this._tasks)
 
