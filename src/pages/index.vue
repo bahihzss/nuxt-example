@@ -14,10 +14,17 @@
     </form>
     <ul>
       <li
-        :key="task.id"
         v-for="task in tasks"
+        :key="task.id"
+        :class="{'TaskList_item-done': task.isDone}"
       >
-        {{ task.name }}
+        <button
+          @click="handleDoneButtonClick(task.id)"
+          :disabled="task.isDone"
+        >
+          ✔️
+        </button>
+        {{ task.title }}
       </li>
     </ul>
   </div>
@@ -40,7 +47,12 @@ export default defineComponent({
     const handleAddButtonClick = async () => {
       if (newTaskTitle.value) {
         await create(newTaskTitle.value)
+        newTaskTitle.value = ''
       }
+    }
+
+    const handleDoneButtonClick = async (id: string) => {
+      await done(id)
     }
 
     return {
@@ -48,12 +60,14 @@ export default defineComponent({
       done,
       newTaskTitle,
       handleAddButtonClick,
+      handleDoneButtonClick,
     }
   },
 })
 </script>
 
 <style scoped>
-.PageIndex {
+.PageIndex .TaskList_item-done {
+  text-decoration: line-through;
 }
 </style>

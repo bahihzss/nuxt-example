@@ -2,16 +2,22 @@ import { TaskRepositoryWithMemory } from '~/repositories/TaskRepositoryWithMemor
 import { getCurrentInstance, onUnmounted, ref } from '@nuxtjs/composition-api'
 import { Task } from '~/domain/Task'
 
+type TaskDto = {
+  readonly id: string
+  readonly title: string
+  readonly isDone: boolean
+}
+
 export const useTasks = () => {
   const tasksRepository = new TaskRepositoryWithMemory()
-  const tasks = ref<Task[]>([])
+  const tasks = ref<TaskDto[]>([])
 
   const clean = tasksRepository.observe((_tasks) => {
-    tasks.value = _tasks
+    tasks.value = _tasks.map(({ id, title, isDone }) => Object.freeze({ id, title, isDone }))
   })
 
-  const create = async (name: string) => {
-    const task = Task.create({ name })
+  const create = async (title: string) => {
+    const task = Task.create({ title })
     await tasksRepository.add(task)
   }
 

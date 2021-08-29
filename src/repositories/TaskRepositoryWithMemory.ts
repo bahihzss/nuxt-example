@@ -3,7 +3,7 @@ import { Task } from '~/domain/Task'
 
 type TaskData = {
   id: string
-  name: string
+  title: string
   isDone: boolean
 }
 
@@ -13,7 +13,7 @@ export class TaskRepositoryWithMemory implements TaskRepository {
   #tasks: TaskData[] = []
 
   get _tasks () {
-    return this.#tasks.map(({ id, name, isDone }) => new Task(id, name, isDone))
+    return this.#tasks.map(({ id, title, isDone }) => new Task(id, title, isDone))
   }
 
   async find (id: string): Promise<Task | null> {
@@ -22,9 +22,9 @@ export class TaskRepositoryWithMemory implements TaskRepository {
 
   async add (task: Task): Promise<boolean> {
     if (!await this.exists(task.id)) {
-      const { id, name, isDone } = task
-      this.#tasks.push({ id, name, isDone })
-      this.#runObservers()
+      const { id, title, isDone } = task
+      this.#tasks.push({ id, title, isDone })
+      this.runObservers()
       return true
     }
     throw new Error(`Failed to add: '${task.id}' already exists.`)
@@ -32,10 +32,10 @@ export class TaskRepositoryWithMemory implements TaskRepository {
 
   async update (task: Task): Promise<boolean> {
     if (await this.exists(task.id)) {
-      const { id, name, isDone } = task
+      const { id, title, isDone } = task
       const index = this._tasks.map(({ id }) => id).indexOf(task.id)
-      this.#tasks.splice(index, 1, { id, name, isDone })
-      this.#runObservers()
+      this.#tasks.splice(index, 1, { id, title, isDone })
+      this.runObservers()
       return true
     }
     throw new Error(`Failed to update: '${task.id}' does not exist.`)
@@ -61,7 +61,7 @@ export class TaskRepositoryWithMemory implements TaskRepository {
     }
   }
 
-  #runObservers () {
+  private runObservers () {
     this.#observers.forEach(observer => { observer(this._tasks) })
   }
 }

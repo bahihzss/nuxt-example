@@ -1,18 +1,18 @@
 import { autoId } from '~/utils/string'
 
 type ConstructorArgs = {
-  name: string
+  title: string
 }
 
 export class Task {
   constructor (
     readonly id: string,
-    readonly name: string,
+    readonly title: string,
     private _isDone = false,
   ) {}
 
-  static create ({ name }: ConstructorArgs) {
-    return new Task(autoId(), name)
+  static create ({ title }: ConstructorArgs) {
+    return new Task(autoId(), title)
   }
 
   public done () {

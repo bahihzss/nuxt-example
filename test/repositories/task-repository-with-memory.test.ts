@@ -24,7 +24,7 @@ describe('TaskRepositoryWithMemory', () => {
   test('find', async () => {
     await taskRepository.add(task)
     const foundTask = await taskRepository.find('test-id')
-    expect(foundTask?.name).toBe(task.name)
+    expect(foundTask?.title).toBe(task.title)
   })
 
   test('update', async () => {

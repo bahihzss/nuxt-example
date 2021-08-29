@@ -14,7 +14,7 @@ describe('useTasks', () => {
     const promise = new Promise(_resolve => { resolve = _resolve })
 
     const unwatch = watch(tasks, (tasks) => {
-      resolve(tasks[0].name)
+      resolve(tasks[0].title)
     })
 
     await create('サンプルタスク')
