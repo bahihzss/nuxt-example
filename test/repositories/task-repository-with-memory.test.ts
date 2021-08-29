@@ -21,11 +21,7 @@ describe('TaskRepositoryWithMemory', () => {
       count++
 
       if (count === 2) {
-        tasks[0].done()
-      }
-
-      if (count === 3) {
-        expect(tasks[0].isDone).toBeTruthy()
+        expect(tasks).toEqual([task])
         resolve(null)
       }
     })
@@ -33,6 +29,6 @@ describe('TaskRepositoryWithMemory', () => {
     await taskRepository.add(task)
     await promise
     unsubscribe()
-    expect(count).toBe(3)
+    expect(count).toBe(2)
   })
 })

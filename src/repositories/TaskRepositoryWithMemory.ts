@@ -1,41 +1,30 @@
 import { TaskRepository, TasksObserver } from '~/domain/TaskRepository'
 import { Task } from '~/domain/Task'
 
+type TaskData = {
+  id: string
+  name: string
+  isDone: boolean
+}
+
 export class TaskRepositoryWithMemory implements TaskRepository {
   #observers: TasksObserver[] = []
 
-  #tasks: Task[] = new Proxy([], {
-    set: (tasks: Task[], key: string | symbol, value: any, tasksReceiver: any): boolean => {
-      if (value instanceof Task) {
-        const taskProxy = new Proxy(value, {
-          set: (task: Task, key: string | symbol, value: any, taskReceiver: any): boolean => {
-            Reflect.set(task, key, value, taskReceiver)
-            if (key in task) {
-              this.#observers.forEach(observer => observer(tasksReceiver))
-            }
-            return true
-          },
-        })
-        Reflect.set(tasks, key, taskProxy, tasksReceiver)
-        this.#observers.forEach(observer => observer(tasksReceiver))
-        return true
-      }
-
-      return Reflect.set(tasks, key, value, tasksReceiver)
-    },
-  })
+  #tasks: TaskData[] = []
 
   get _tasks () {
-    return this.#tasks
+    return this.#tasks.map(({ id, name, isDone }) => new Task(id, name, isDone))
   }
 
   async add (task: Task): Promise<boolean> {
-    this.#tasks.push(task)
+    const { id, name, isDone } = task
+    this.#tasks.push({ id, name, isDone })
+    this.#observers.forEach(observer => { observer(this._tasks) })
     return true
   }
 
   observe (observer: TasksObserver): () => void {
-    observer(this.#tasks)
+    observer(this._tasks)
 
     if (!this.#observers.includes(observer)) {
       this.#observers.push(observer)
