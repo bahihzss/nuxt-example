@@ -19,8 +19,12 @@ export class TaskRepositoryWithMemory implements TaskRepository {
   async add (task: Task): Promise<boolean> {
     const { id, name, isDone } = task
     this.#tasks.push({ id, name, isDone })
-    this.#observers.forEach(observer => { observer(this._tasks) })
+    this.#runObservers()
     return true
+  }
+
+  #runObservers () {
+    this.#observers.forEach(observer => { observer(this._tasks) })
   }
 
   observe (observer: TasksObserver): () => void {
